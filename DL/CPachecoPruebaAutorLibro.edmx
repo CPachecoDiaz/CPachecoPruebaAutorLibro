@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CPahcecoPruebaAutorLibroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CPahcecoPruebaAutorLibroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Autor">
           <Key>
             <PropertyRef Name="IdAutor" />
@@ -75,6 +75,17 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="LibroAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Titulo" Type="nvarchar" Mode="In" />
+          <Parameter Name="FechaPublicacion" Type="date" Mode="In" />
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+        </Function>
+        <Function Name="LibroGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Titulo" Type="nvarchar" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="CPahcecoPruebaAutorLibroModelStoreContainer">
           <EntitySet Name="Autor" EntityType="Self.Autor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Editorial" EntityType="Self.Editorial" Schema="dbo" store:Type="Tables" />
@@ -98,8 +109,7 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
             <End Role="Libro" EntitySet="Libro" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CPahcecoPruebaAutorLibroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -159,6 +169,17 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
             <End Role="Autor" EntitySet="Autors" />
             <End Role="Libro" EntitySet="Libroes" />
           </AssociationSet>
+          <FunctionImport Name="LibroAdd">
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+            <Parameter Name="FechaPublicacion" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="LibroGetAll">
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -201,6 +222,8 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
               <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="LibroAdd" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroAdd" />
+          <FunctionImportMapping FunctionImportName="LibroGetAll" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroGetAll" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

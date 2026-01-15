@@ -12,6 +12,8 @@ namespace DL
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class CPahcecoPruebaAutorLibroEntities : DbContext
     {
@@ -28,5 +30,43 @@ namespace DL
         public virtual DbSet<Autor> Autors { get; set; }
         public virtual DbSet<Editorial> Editorials { get; set; }
         public virtual DbSet<Libro> Libroes { get; set; }
+    
+        public virtual int LibroAdd(string titulo, Nullable<System.DateTime> fechaPublicacion, Nullable<int> idEditorial)
+        {
+            var tituloParameter = titulo != null ?
+                new ObjectParameter("Titulo", titulo) :
+                new ObjectParameter("Titulo", typeof(string));
+    
+            var fechaPublicacionParameter = fechaPublicacion.HasValue ?
+                new ObjectParameter("FechaPublicacion", fechaPublicacion) :
+                new ObjectParameter("FechaPublicacion", typeof(System.DateTime));
+    
+            var idEditorialParameter = idEditorial.HasValue ?
+                new ObjectParameter("IdEditorial", idEditorial) :
+                new ObjectParameter("IdEditorial", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("LibroAdd", tituloParameter, fechaPublicacionParameter, idEditorialParameter);
+        }
+    
+        public virtual int LibroGetAll(string titulo, Nullable<int> year, Nullable<int> idEditorial, Nullable<int> idAutor)
+        {
+            var tituloParameter = titulo != null ?
+                new ObjectParameter("Titulo", titulo) :
+                new ObjectParameter("Titulo", typeof(string));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var idEditorialParameter = idEditorial.HasValue ?
+                new ObjectParameter("IdEditorial", idEditorial) :
+                new ObjectParameter("IdEditorial", typeof(int));
+    
+            var idAutorParameter = idAutor.HasValue ?
+                new ObjectParameter("IdAutor", idAutor) :
+                new ObjectParameter("IdAutor", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("LibroGetAll", tituloParameter, yearParameter, idEditorialParameter, idAutorParameter);
+        }
     }
 }
