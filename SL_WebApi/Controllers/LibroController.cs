@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -21,26 +22,15 @@ namespace SL_WebApi.Controllers
             return response;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetAll")]
-        public IHttpActionResult GetAll()
+        public IHttpActionResult GetAll([FromBody] ML.Libro libro)
         {
-            //ML.Libro libro = new ML.Libro();
-            //libro.Editorial = new ML.Editorial();      
-            //libro.Titulo = "";
-            //libro.FechaPublicacion = 2025-01-01;
-            //libro.Editorial.IdEditorial = (libro.Editorial.IdEditorial == 0) ? null : libro.Editorial.IdEditorial;
-
-            ML.Libro libro = new ML.Libro
+            if (libro == null)
             {
-                Titulo = "", 
-                FechaPublicacion = new DateTime(1963, 1, 1),
-                Editorial = new ML.Editorial
-                {
-                    IdEditorial = null
-                },
-                Autores = null  
-            };
+                libro = new ML.Libro();
+            }
+
 
             ML.Result result = BL.Libro.GetAll(libro);
 
@@ -53,5 +43,6 @@ namespace SL_WebApi.Controllers
                 return Content(HttpStatusCode.BadRequest, result);
             }
         }
+
     }
 }

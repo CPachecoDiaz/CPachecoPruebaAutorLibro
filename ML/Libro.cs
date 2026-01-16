@@ -12,7 +12,7 @@ namespace ML
         public string Titulo { get; set; }
         public DateTime? FechaPublicacion { get; set; }
         public ML.Editorial Editorial { get; set; }  
+        public ML.Autor Autor { get; set; }
         public List<object> Libros { get; set; }
-        public  List<Autor>  Autores{ get; set; }
     }
 }
