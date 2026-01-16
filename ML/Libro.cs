@@ -10,8 +10,9 @@ namespace ML
     {
         public int IdLibro { get; set; }
         public string Titulo { get; set; }
-        public string FechaPublicacion { get; set; }
+        public DateTime? FechaPublicacion { get; set; }
         public ML.Editorial Editorial { get; set; }  
         public List<object> Libros { get; set; }
+        public  List<Autor>  Autores{ get; set; }
     }
 }

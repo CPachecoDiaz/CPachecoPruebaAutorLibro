@@ -16,7 +16,10 @@ namespace DL
         public int IdLibro { get; set; }
         public string Titulo { get; set; }
         public System.DateTime FechaPublicacion { get; set; }
+        public int IdAutor { get; set; }
         public string AutorNombre { get; set; }
+        public int IdEditorial { get; set; }
         public string EditorialNombre { get; set; }
+        public string Apellido { get; set; }
     }
 }

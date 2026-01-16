@@ -185,8 +185,11 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
           <Property Type="Int32" Name="IdLibro" Nullable="false" />
           <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
           <Property Type="DateTime" Name="FechaPublicacion" Nullable="false" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
           <Property Type="String" Name="AutorNombre" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
           <Property Type="String" Name="EditorialNombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Apellido" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -236,8 +239,11 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
                 <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
                 <ScalarProperty Name="Titulo" ColumnName="Titulo" />
                 <ScalarProperty Name="FechaPublicacion" ColumnName="FechaPublicacion" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
                 <ScalarProperty Name="AutorNombre" ColumnName="AutorNombre" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
                 <ScalarProperty Name="EditorialNombre" ColumnName="EditorialNombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

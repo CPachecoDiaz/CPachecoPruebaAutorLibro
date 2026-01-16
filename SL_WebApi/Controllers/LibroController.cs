@@ -25,15 +25,24 @@ namespace SL_WebApi.Controllers
         [Route("GetAll")]
         public IHttpActionResult GetAll()
         {
-            ML.Libro libro = new ML.Libro();
-            libro.Editorial = new ML.Editorial();
-            ML.Autor autor = new ML.Autor();
-            libro.Titulo = "";
-            libro.FechaPublicacion = null;
-            libro.Editorial.IdEditorial = (libro.Editorial.IdEditorial == 0) ? null : libro.Editorial.IdEditorial;
-            int? idAutor = null;
+            //ML.Libro libro = new ML.Libro();
+            //libro.Editorial = new ML.Editorial();      
+            //libro.Titulo = "";
+            //libro.FechaPublicacion = 2025-01-01;
+            //libro.Editorial.IdEditorial = (libro.Editorial.IdEditorial == 0) ? null : libro.Editorial.IdEditorial;
 
-            ML.Result result = BL.Libro.GetAll(libro, idAutor);
+            ML.Libro libro = new ML.Libro
+            {
+                Titulo = "", 
+                FechaPublicacion = new DateTime(1963, 1, 1),
+                Editorial = new ML.Editorial
+                {
+                    IdEditorial = null
+                },
+                Autores = null  
+            };
+
+            ML.Result result = BL.Libro.GetAll(libro);
 
             if (result.Correct)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ML;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,40 +9,51 @@ namespace BL
 {
     public class Libro
     {
-        public static ML.Result GetAll(ML.Libro libroConsulta , int? idAutor)
+        public static ML.Result GetAll(ML.Libro libroConsulta )
         {
             ML.Result result = new ML.Result();
             try
             {
-                int? añoPublicacion = null;
-                if (DateTime.TryParse(libroConsulta.FechaPublicacion, out DateTime fecha))
-                {
-                    añoPublicacion = fecha.Year;
-                }
 
-               // ML.Autor autor = new ML.Autor();
-                //autor.IdAutor = idAutor;
+                int? anioPublicacion = libroConsulta.FechaPublicacion?.Year;        
+                int? idAutor = libroConsulta.Autores?.FirstOrDefault()?.IdAutor;
 
                 using (DL.CPahcecoPruebaAutorLibroEntities context = new DL.CPahcecoPruebaAutorLibroEntities())
                 {
-                    var registros = context.LibroGetAll(libroConsulta.Titulo, añoPublicacion, libroConsulta.Editorial.IdEditorial, idAutor).ToList();
+                    var registros = context.LibroGetAll(libroConsulta.Titulo, anioPublicacion, libroConsulta.Editorial.IdEditorial, idAutor).ToList();
 
-                    if(registros.Count > 0 )
+                    if (registros.Count > 0)
                     {
                         result.Objects = new List<object>();
 
-                        foreach ( var registro in registros )
+                        foreach (var registro in registros)
                         {
-                            ML.Libro libro = new ML.Libro();
-                            libro.Editorial = new ML.Editorial();
+                            ML.Libro libro = new ML.Libro
+                            {
+                                IdLibro = registro.IdLibro,
+                                Titulo = registro.Titulo,
+                                FechaPublicacion = registro.FechaPublicacion,                        
+                                Editorial = new ML.Editorial
+                                {
+                                    IdEditorial = registro.IdEditorial,
+                                    Nombre = registro.EditorialNombre
+                                }
+                            };
 
-                            libro.IdLibro = registro.IdLibro;
-                            libro.Titulo = registro.Titulo;
-                            libro.FechaPublicacion = registro.FechaPublicacion.ToString("yyyy-MM-dd");
-                            libro.Editorial.Nombre = registro.EditorialNombre;
+                            if (registro.IdAutor > 0)
+                            {
+                                libro.Autores = new List<ML.Autor>
+                        {
+                            new ML.Autor
+                            {
+                                IdAutor = registro.IdAutor,
+                                Nombre = registro.AutorNombre,
+                                Apellido = registro.Apellido
+                            }
+                        };
+                            }
 
-                            result.Objects.Add( libro );
-
+                            result.Objects.Add(libro);
                         }
                     }
                     else
