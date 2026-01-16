@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -57,6 +58,24 @@ namespace PL.Controllers
             return View(libroBuscar);
         }
 
+        [HttpPost]
+        public ActionResult Forms(ML.Libro libro)
+        {
+
+            ML.Result result = Add(libro);
+
+            if (result.Correct)
+            {
+                TempData["Success"] = "El libro se agregó correctamente";
+            }
+            else
+            {
+                TempData["Error"] = "Ocurrió un error al agregar el libro: " + result.ErrorMessage;
+            }
+
+            return RedirectToAction("GetAll");
+        }
+
         [NonAction]
         public ML.Result GetAllRest(ML.Libro libro)
         {
@@ -104,6 +123,40 @@ namespace PL.Controllers
 
             return result;
 
+        }
+
+        [NonAction]
+        public ML.Result Add(ML.Libro Libro)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    string endpoint = "http://localhost:62135/api/Libro/";
+
+                    client.BaseAddress = new Uri(endpoint);
+
+                    var postTask = client.PostAsJsonAsync<ML.Libro>("Add", Libro);
+                    postTask.Wait();
+
+                    var resultServicio = postTask.Result;
+
+                    if (resultServicio.IsSuccessStatusCode)
+                    {
+                        result.Correct = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
         }
     }
 }
