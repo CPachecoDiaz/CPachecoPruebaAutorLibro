@@ -1,6 +1,8 @@
-﻿using ML;
+﻿using DL;
+using ML;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -101,6 +103,68 @@ namespace BL
             return result;
         }
 
+        public static ML.Result DeleteByEditorial(int idEditorial)
+        {
+            ML.Result result = new ML.Result();
 
+            try
+            {
+                using (var context = new DL.CPahcecoPruebaAutorLibroEntities())
+                {
+                    int libroDelete = context.DeleteByEditorial(idEditorial);
+
+                    if (libroDelete > 0)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "No se elimino correctamente";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
+
+        public static ML.Result DeleteByAutor(int idAutor)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (var context = new DL.CPahcecoPruebaAutorLibroEntities())
+                {
+                    int libroDelete = context.DeleteByAutor(idAutor);
+
+                    if (libroDelete > 0)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "No se elimino correctamente";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
     }
 }
