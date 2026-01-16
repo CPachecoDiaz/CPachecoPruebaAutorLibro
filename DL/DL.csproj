@@ -75,6 +75,9 @@
     <Compile Include="Libro.cs">
       <DependentUpon>CPachecoPruebaAutorLibro.tt</DependentUpon>
     </Compile>
+    <Compile Include="LibroGetAll_Result.cs">
+      <DependentUpon>CPachecoPruebaAutorLibro.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
