@@ -27,26 +27,9 @@ namespace DL
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Autor> Autors { get; set; }
         public virtual DbSet<Editorial> Editorials { get; set; }
         public virtual DbSet<Libro> Libroes { get; set; }
-    
-        public virtual int LibroAdd(string titulo, Nullable<System.DateTime> fechaPublicacion, Nullable<int> idEditorial)
-        {
-            var tituloParameter = titulo != null ?
-                new ObjectParameter("Titulo", titulo) :
-                new ObjectParameter("Titulo", typeof(string));
-    
-            var fechaPublicacionParameter = fechaPublicacion.HasValue ?
-                new ObjectParameter("FechaPublicacion", fechaPublicacion) :
-                new ObjectParameter("FechaPublicacion", typeof(System.DateTime));
-    
-            var idEditorialParameter = idEditorial.HasValue ?
-                new ObjectParameter("IdEditorial", idEditorial) :
-                new ObjectParameter("IdEditorial", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("LibroAdd", tituloParameter, fechaPublicacionParameter, idEditorialParameter);
-        }
+        public virtual DbSet<Autor> Autors { get; set; }
     
         public virtual ObjectResult<LibroGetAll_Result> LibroGetAll(string titulo, Nullable<int> year, Nullable<int> idEditorial, Nullable<int> idAutor)
         {
@@ -67,6 +50,27 @@ namespace DL
                 new ObjectParameter("IdAutor", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<LibroGetAll_Result>("LibroGetAll", tituloParameter, yearParameter, idEditorialParameter, idAutorParameter);
+        }
+    
+        public virtual int LibroAdd(string titulo, Nullable<System.DateTime> fechaPublicacion, Nullable<int> idEditorial, Nullable<int> idAutor)
+        {
+            var tituloParameter = titulo != null ?
+                new ObjectParameter("Titulo", titulo) :
+                new ObjectParameter("Titulo", typeof(string));
+    
+            var fechaPublicacionParameter = fechaPublicacion.HasValue ?
+                new ObjectParameter("FechaPublicacion", fechaPublicacion) :
+                new ObjectParameter("FechaPublicacion", typeof(System.DateTime));
+    
+            var idEditorialParameter = idEditorial.HasValue ?
+                new ObjectParameter("IdEditorial", idEditorial) :
+                new ObjectParameter("IdEditorial", typeof(int));
+    
+            var idAutorParameter = idAutor.HasValue ?
+                new ObjectParameter("IdAutor", idAutor) :
+                new ObjectParameter("IdAutor", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("LibroAdd", tituloParameter, fechaPublicacionParameter, idEditorialParameter, idAutorParameter);
         }
     }
 }

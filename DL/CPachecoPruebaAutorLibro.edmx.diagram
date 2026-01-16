@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e8dabbf5c495453182484a6088b3e90e" Name="Diagram1" ZoomLevel="83">
-        <EntityTypeShape EntityType="CPahcecoPruebaAutorLibroModel.Autor" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+      <Diagram DiagramId="e8dabbf5c495453182484a6088b3e90e" Name="Diagram1" ZoomLevel="72">
         <EntityTypeShape EntityType="CPahcecoPruebaAutorLibroModel.Editorial" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CPahcecoPruebaAutorLibroModel.Libro" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="CPahcecoPruebaAutorLibroModel.FK__Libro__IdEditori__145C0A3F" ManuallyRouted="false" />
-        <AssociationConnector Association="CPahcecoPruebaAutorLibroModel.AutorLibro" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="CPahcecoPruebaAutorLibroModel.Autor" Width="1.5" PointX="0.75" PointY="1.125" />
+        <AssociationConnector Association="CPahcecoPruebaAutorLibroModel.FK_Libro_Autor" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

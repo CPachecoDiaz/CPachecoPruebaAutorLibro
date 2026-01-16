@@ -14,19 +14,13 @@ namespace DL
     
     public partial class Libro
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Libro()
-        {
-            this.Autors = new HashSet<Autor>();
-        }
-    
         public int IdLibro { get; set; }
         public string Titulo { get; set; }
         public System.DateTime FechaPublicacion { get; set; }
         public int IdEditorial { get; set; }
+        public int IdAutor { get; set; }
     
         public virtual Editorial Editorial { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Autor> Autors { get; set; }
+        public virtual Autor Autor { get; set; }
     }
 }

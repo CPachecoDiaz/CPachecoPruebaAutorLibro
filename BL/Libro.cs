@@ -9,14 +9,15 @@ namespace BL
 {
     public class Libro
     {
-        public static ML.Result GetAll(ML.Libro libroConsulta )
+        public static ML.Result GetAll(ML.Libro libroConsulta)
         {
             ML.Result result = new ML.Result();
             try
             {
 
-                int? anioPublicacion = libroConsulta.FechaPublicacion?.Year;        
-             
+                int? anioPublicacion = libroConsulta.FechaPublicacion?.Year;
+               
+
                 using (DL.CPahcecoPruebaAutorLibroEntities context = new DL.CPahcecoPruebaAutorLibroEntities())
                 {
                     var registros = context.LibroGetAll(libroConsulta.Titulo, anioPublicacion, libroConsulta.Editorial.IdEditorial, libroConsulta.Autor.IdAutor).ToList();
@@ -31,7 +32,7 @@ namespace BL
                             {
                                 IdLibro = registro.IdLibro,
                                 Titulo = registro.Titulo,
-                                FechaPublicacion = registro.FechaPublicacion,                        
+                                FechaPublicacion = registro.FechaPublicacion,
                                 Editorial = new ML.Editorial
                                 {
                                     IdEditorial = registro.IdEditorial,
@@ -47,6 +48,7 @@ namespace BL
 
                             result.Objects.Add(libro);
                         }
+                        result.Correct = true;
                     }
                     else
                     {
@@ -54,10 +56,9 @@ namespace BL
                         result.ErrorMessage = "No hay libros registrados";
                     }
 
-                    
+
                 }
 
-                result.Correct = true;
             }
             catch (Exception ex)
             {
@@ -68,6 +69,38 @@ namespace BL
             return result;
         }
 
-        
+        public static ML.Result Add(ML.Libro libro)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (var context = new DL.CPahcecoPruebaAutorLibroEntities())
+                {
+                   int libroAdd = context.LibroAdd(libro.Titulo,libro.FechaPublicacion,libro.Editorial.IdEditorial,libro.Autor.IdAutor);
+
+                    if (libroAdd == 1)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "No se añadio correctamente";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
+
+
     }
 }
