@@ -13,16 +13,6 @@
           <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Apellido" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="AutorLibro">
-          <Key>
-            <PropertyRef Name="IdAutor" />
-            <PropertyRef Name="IdLibro" />
-          </Key>
-          <Property Name="IdAutor" Type="int" Nullable="false" />
-          <Property Name="IdLibro" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Editorial">
           <Key>
             <PropertyRef Name="IdEditorial" />
@@ -38,31 +28,8 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
           <Property Name="Titulo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="FechaPublicacion" Type="date" Nullable="false" />
           <Property Name="IdEditorial" Type="int" Nullable="false" />
+          <Property Name="IdAutor" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AutorLibr__IdAut__164452B1">
-          <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
-          <End Role="AutorLibro" Type="Self.AutorLibro" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Autor">
-              <PropertyRef Name="IdAutor" />
-            </Principal>
-            <Dependent Role="AutorLibro">
-              <PropertyRef Name="IdAutor" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__AutorLibr__IdLib__173876EA">
-          <End Role="Libro" Type="Self.Libro" Multiplicity="1" />
-          <End Role="AutorLibro" Type="Self.AutorLibro" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Libro">
-              <PropertyRef Name="IdLibro" />
-            </Principal>
-            <Dependent Role="AutorLibro">
-              <PropertyRef Name="IdLibro" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Libro__IdEditori__145C0A3F">
           <End Role="Editorial" Type="Self.Editorial" Multiplicity="1" />
           <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
@@ -75,10 +42,23 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Libro_Autor">
+          <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="LibroAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Titulo" Type="nvarchar" Mode="In" />
           <Parameter Name="FechaPublicacion" Type="date" Mode="In" />
           <Parameter Name="IdEditorial" Type="int" Mode="In" />
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
         </Function>
         <Function Name="LibroGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Titulo" Type="nvarchar" Mode="In" />
@@ -90,22 +70,12 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
           <EntitySet Name="Autor" EntityType="Self.Autor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Editorial" EntityType="Self.Editorial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Libro" EntityType="Self.Libro" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AutorLibro" EntityType="Self.AutorLibro" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [AutorLibro].[IdAutor] AS [IdAutor], 
-    [AutorLibro].[IdLibro] AS [IdLibro]
-    FROM [dbo].[AutorLibro] AS [AutorLibro]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__AutorLibr__IdAut__164452B1" Association="Self.FK__AutorLibr__IdAut__164452B1">
-            <End Role="Autor" EntitySet="Autor" />
-            <End Role="AutorLibro" EntitySet="AutorLibro" />
-          </AssociationSet>
-          <AssociationSet Name="FK__AutorLibr__IdLib__173876EA" Association="Self.FK__AutorLibr__IdLib__173876EA">
-            <End Role="Libro" EntitySet="Libro" />
-            <End Role="AutorLibro" EntitySet="AutorLibro" />
-          </AssociationSet>
           <AssociationSet Name="FK__Libro__IdEditori__145C0A3F" Association="Self.FK__Libro__IdEditori__145C0A3F">
             <End Role="Editorial" EntitySet="Editorial" />
+            <End Role="Libro" EntitySet="Libro" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Libro_Autor" Association="Self.FK_Libro_Autor">
+            <End Role="Autor" EntitySet="Autor" />
             <End Role="Libro" EntitySet="Libro" />
           </AssociationSet>
         </EntityContainer>
@@ -113,15 +83,6 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CPahcecoPruebaAutorLibroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Autor">
-          <Key>
-            <PropertyRef Name="IdAutor" />
-          </Key>
-          <Property Name="IdAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Libroes" Relationship="Self.AutorLibro" FromRole="Autor" ToRole="Libro" />
-        </EntityType>
         <EntityType Name="Editorial">
           <Key>
             <PropertyRef Name="IdEditorial" />
@@ -139,7 +100,8 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
           <Property Name="FechaPublicacion" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IdEditorial" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Editorial" Relationship="Self.FK__Libro__IdEditori__145C0A3F" FromRole="Libro" ToRole="Editorial" />
-          <NavigationProperty Name="Autors" Relationship="Self.AutorLibro" FromRole="Libro" ToRole="Autor" />
+          <Property Name="IdAutor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Autor" Relationship="CPahcecoPruebaAutorLibroModel.FK_Libro_Autor" FromRole="Libro" ToRole="Autor" />
         </EntityType>
         <Association Name="FK__Libro__IdEditori__145C0A3F">
           <End Role="Editorial" Type="Self.Editorial" Multiplicity="1" />
@@ -153,33 +115,30 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AutorLibro">
-          <End Role="Autor" Type="Self.Autor" Multiplicity="*" />
-          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="CPahcecoPruebaAutorLibroEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Autors" EntityType="Self.Autor" />
           <EntitySet Name="Editorials" EntityType="Self.Editorial" />
           <EntitySet Name="Libroes" EntityType="Self.Libro" />
           <AssociationSet Name="FK__Libro__IdEditori__145C0A3F" Association="Self.FK__Libro__IdEditori__145C0A3F">
             <End Role="Editorial" EntitySet="Editorials" />
             <End Role="Libro" EntitySet="Libroes" />
           </AssociationSet>
-          <AssociationSet Name="AutorLibro" Association="Self.AutorLibro">
-            <End Role="Autor" EntitySet="Autors" />
-            <End Role="Libro" EntitySet="Libroes" />
-          </AssociationSet>
-          <FunctionImport Name="LibroAdd">
-            <Parameter Name="Titulo" Mode="In" Type="String" />
-            <Parameter Name="FechaPublicacion" Mode="In" Type="DateTime" />
-            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="LibroGetAll" ReturnType="Collection(CPahcecoPruebaAutorLibroModel.LibroGetAll_Result)">
             <Parameter Name="Titulo" Mode="In" Type="String" />
             <Parameter Name="Year" Mode="In" Type="Int32" />
             <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
             <Parameter Name="IdAutor" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="LibroAdd">
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+            <Parameter Name="FechaPublicacion" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Autors" EntityType="CPahcecoPruebaAutorLibroModel.Autor" />
+          <AssociationSet Name="FK_Libro_Autor" Association="CPahcecoPruebaAutorLibroModel.FK_Libro_Autor">
+            <End Role="Autor" EntitySet="Autors" />
+            <End Role="Libro" EntitySet="Libroes" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="LibroGetAll_Result">
           <Property Type="Int32" Name="IdLibro" Nullable="false" />
@@ -191,21 +150,33 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
           <Property Type="String" Name="EditorialNombre" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Apellido" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+          </Key>
+          <Property Name="IdAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Libroes" Relationship="CPahcecoPruebaAutorLibroModel.FK_Libro_Autor" FromRole="Autor" ToRole="Libro" />
+        </EntityType>
+        <Association Name="FK_Libro_Autor">
+          <End Type="CPahcecoPruebaAutorLibroModel.Autor" Role="Autor" Multiplicity="1" />
+          <End Type="CPahcecoPruebaAutorLibroModel.Libro" Role="Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CPahcecoPruebaAutorLibroModelStoreContainer" CdmEntityContainer="CPahcecoPruebaAutorLibroEntities">
-          <EntitySetMapping Name="Autors">
-            <EntityTypeMapping TypeName="CPahcecoPruebaAutorLibroModel.Autor">
-              <MappingFragment StoreEntitySet="Autor">
-                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Editorials">
             <EntityTypeMapping TypeName="CPahcecoPruebaAutorLibroModel.Editorial">
               <MappingFragment StoreEntitySet="Editorial">
@@ -217,6 +188,7 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
           <EntitySetMapping Name="Libroes">
             <EntityTypeMapping TypeName="CPahcecoPruebaAutorLibroModel.Libro">
               <MappingFragment StoreEntitySet="Libro">
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
                 <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
                 <ScalarProperty Name="Titulo" ColumnName="Titulo" />
                 <ScalarProperty Name="FechaPublicacion" ColumnName="FechaPublicacion" />
@@ -224,15 +196,6 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AutorLibro" TypeName="CPahcecoPruebaAutorLibroModel.AutorLibro" StoreEntitySet="AutorLibro">
-            <EndProperty Name="Autor">
-              <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
-            </EndProperty>
-            <EndProperty Name="Libro">
-              <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="LibroAdd" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroAdd" />
           <FunctionImportMapping FunctionImportName="LibroGetAll" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroGetAll">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CPahcecoPruebaAutorLibroModel.LibroGetAll_Result">
@@ -247,6 +210,16 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="LibroAdd" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroAdd" />
+          <EntitySetMapping Name="Autors">
+            <EntityTypeMapping TypeName="CPahcecoPruebaAutorLibroModel.Autor">
+              <MappingFragment StoreEntitySet="Autor">
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

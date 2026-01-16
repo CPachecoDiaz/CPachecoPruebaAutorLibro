@@ -69,6 +69,38 @@ namespace BL
             return result;
         }
 
+        public static ML.Result Add(ML.Libro libro)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (var context = new DL.CPahcecoPruebaAutorLibroEntities())
+                {
+                   int libroAdd = context.LibroAdd(libro.Titulo,libro.FechaPublicacion,libro.Editorial.IdEditorial,libro.Autor.IdAutor);
+
+                    if (libroAdd == 1)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "No se añadio correctamente";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+        }
+
 
     }
 }
