@@ -67,5 +67,43 @@ namespace SL_WebApi.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("DeleteByEditorial/{idEditorial}")]
+        public IHttpActionResult DeleteByEditorial(int idEditorial)
+        {
+            ML.Result result = BL.Libro.DeleteByEditorial(idEditorial);
+
+            if (result.Correct)
+            {
+                return Ok(result);
+
+            }
+            else
+            {
+                return Content(HttpStatusCode.BadRequest, result.ErrorMessage);
+
+            }
+
+        }
+
+        [HttpDelete]
+        [Route("DeleteByAutor/{idAutor}")]
+        public IHttpActionResult DeleteByAutor(int idAutor)
+        {
+            ML.Result result = BL.Libro.DeleteByAutor(idAutor);
+
+            if (result.Correct)
+            {
+                return Ok(result);
+
+            }
+            else
+            {
+                return Content(HttpStatusCode.BadRequest, result.ErrorMessage);
+
+            }
+
+        }
+
     }
 }

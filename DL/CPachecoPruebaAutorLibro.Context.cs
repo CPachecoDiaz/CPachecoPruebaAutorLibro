@@ -72,5 +72,23 @@ namespace DL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("LibroAdd", tituloParameter, fechaPublicacionParameter, idEditorialParameter, idAutorParameter);
         }
+    
+        public virtual int DeleteByEditorial(Nullable<int> idEditorial)
+        {
+            var idEditorialParameter = idEditorial.HasValue ?
+                new ObjectParameter("IdEditorial", idEditorial) :
+                new ObjectParameter("IdEditorial", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteByEditorial", idEditorialParameter);
+        }
+    
+        public virtual int DeleteByAutor(Nullable<int> idAutor)
+        {
+            var idAutorParameter = idAutor.HasValue ?
+                new ObjectParameter("IdAutor", idAutor) :
+                new ObjectParameter("IdAutor", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteByAutor", idAutorParameter);
+        }
     }
 }

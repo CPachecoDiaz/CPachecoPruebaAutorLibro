@@ -54,6 +54,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="DeleteByAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteByEditorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+        </Function>
         <Function Name="LibroAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Titulo" Type="nvarchar" Mode="In" />
           <Parameter Name="FechaPublicacion" Type="date" Mode="In" />
@@ -139,6 +145,12 @@
             <End Role="Autor" EntitySet="Autors" />
             <End Role="Libro" EntitySet="Libroes" />
           </AssociationSet>
+          <FunctionImport Name="DeleteByEditorial">
+          <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteByAutor">
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="LibroGetAll_Result">
           <Property Type="Int32" Name="IdLibro" Nullable="false" />
@@ -220,6 +232,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteByEditorial" FunctionName="CPahcecoPruebaAutorLibroModel.Store.DeleteByEditorial" />
+          <FunctionImportMapping FunctionImportName="DeleteByAutor" FunctionName="CPahcecoPruebaAutorLibroModel.Store.DeleteByAutor" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
