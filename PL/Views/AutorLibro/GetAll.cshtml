@@ -18,6 +18,23 @@
     </button>
 </div>
 
+<div>
+    @using (Html.BeginForm("GetAll", "AutorLibro", FormMethod.Post))
+    {<div id="busquedaForm" style="display:none;" class="row g-3">
+    <div class="col-md-3"> @Html.LabelFor(m => m.Titulo) @Html.TextBoxFor(m => m.Titulo, new { @class = "form-control", placeholder = "Título" }) </div>
+    <div class="col-md-3"> @Html.Label("Fecha Publicación") @Html.TextBoxFor(m => m.FechaPublicacion, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" }) </div>
+    <div class="col-md-3"> @Html.Label("Editorial") @Html.TextBoxFor(m => m.Editorial.IdEditorial, new { @class = "form-control", type = "number", placeholder = "Id Editorial" }) </div>
+    <div class="col-md-3"> @Html.Label("Editorial") @Html.TextBoxFor(m => m.Autor.IdAutor, new { @class = "form-control", type = "number", placeholder = "Id Editorial" }) </div>
+
+    <div class="mt-4 text-end">
+        <button type="submit" class="btn btn-primary"> Buscar </button>
+        <a href="@Url.Action("GetAll", "AutorLibro")" class="btn btn-secondary"> Limpiar </a>
+    </div>
+</div>
+
+    }
+</div>
+
 <div class="container-fluid mt-4">
 
     <!-- Tabla -->
@@ -40,34 +57,34 @@
                         {
                             foreach (ML.Libro libro in Model.Libros)
                             {
-                        <tr>
-                            <td class="ps-4 fw-semibold">
-                                @libro.Titulo
-                            </td>
+                                <tr>
+                                    <td class="ps-4 fw-semibold">
+                                        @libro.Titulo
+                                    </td>
 
-                            <td class="text-center text-muted">
-                                @(libro.FechaPublicacion != null
+                                    <td class="text-center text-muted">
+                                        @(libro.FechaPublicacion != null
                                             ? libro.FechaPublicacion.Value.ToString("dd/MM/yyyy")
                                             : "-")
-                            </td>
+                                    </td>
 
-                            <td>
-                                @libro.Editorial.Nombre
-                            </td>
+                                    <td>
+                                        @libro.Editorial.Nombre
+                                    </td>
 
-                            <td>
-                                @libro.Autor.Nombre @libro.Autor.Apellido
-                            </td>
-                        </tr>
+                                    <td>
+                                        @libro.Autor.Nombre @libro.Autor.Apellido
+                                    </td>
+                                </tr>
                             }
                         }
                         else
                         {
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">
-                                No hay libros registrados
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">
+                                    No hay libros registrados
+                                </td>
+                            </tr>
                         }
                     </tbody>
 
@@ -76,4 +93,14 @@
 
         </div>
     </div>
+</div>
 
+    <script src="~/Scripts/jquery-3.7.0.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnBusqueda').click(function () {
+                $('#busquedaForm').toggle();
+            });
+        });
+    </script>

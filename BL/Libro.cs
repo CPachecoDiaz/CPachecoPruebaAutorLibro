@@ -16,11 +16,10 @@ namespace BL
             {
 
                 int? anioPublicacion = libroConsulta.FechaPublicacion?.Year;        
-                int? idAutor = libroConsulta.Autores?.FirstOrDefault()?.IdAutor;
-
+             
                 using (DL.CPahcecoPruebaAutorLibroEntities context = new DL.CPahcecoPruebaAutorLibroEntities())
                 {
-                    var registros = context.LibroGetAll(libroConsulta.Titulo, anioPublicacion, libroConsulta.Editorial.IdEditorial, idAutor).ToList();
+                    var registros = context.LibroGetAll(libroConsulta.Titulo, anioPublicacion, libroConsulta.Editorial.IdEditorial, libroConsulta.Autor.IdAutor).ToList();
 
                     if (registros.Count > 0)
                     {
@@ -37,21 +36,14 @@ namespace BL
                                 {
                                     IdEditorial = registro.IdEditorial,
                                     Nombre = registro.EditorialNombre
-                                }
+                                },
+                                 Autor = new ML.Autor
+                                 {
+                                     IdAutor = registro.IdAutor,
+                                     Nombre = registro.AutorNombre,
+                                     Apellido = registro.Apellido
+                                 }
                             };
-
-                            if (registro.IdAutor > 0)
-                            {
-                                libro.Autores = new List<ML.Autor>
-                        {
-                            new ML.Autor
-                            {
-                                IdAutor = registro.IdAutor,
-                                Nombre = registro.AutorNombre,
-                                Apellido = registro.Apellido
-                            }
-                        };
-                            }
 
                             result.Objects.Add(libro);
                         }
