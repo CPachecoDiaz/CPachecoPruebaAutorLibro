@@ -174,13 +174,23 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
             <Parameter Name="FechaPublicacion" Mode="In" Type="DateTime" />
             <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="LibroGetAll">
+          <FunctionImport Name="LibroGetAll" ReturnType="Collection(CPahcecoPruebaAutorLibroModel.LibroGetAll_Result)">
             <Parameter Name="Titulo" Mode="In" Type="String" />
             <Parameter Name="Year" Mode="In" Type="Int32" />
             <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
             <Parameter Name="IdAutor" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="LibroGetAll_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublicacion" Nullable="false" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="AutorNombre" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="String" Name="EditorialNombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Apellido" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -223,7 +233,20 @@ warning 6002: The table/view 'CPahcecoPruebaAutorLibro.dbo.AutorLibro' does not 
             </EndProperty>
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="LibroAdd" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroAdd" />
-          <FunctionImportMapping FunctionImportName="LibroGetAll" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroGetAll" />
+          <FunctionImportMapping FunctionImportName="LibroGetAll" FunctionName="CPahcecoPruebaAutorLibroModel.Store.LibroGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CPahcecoPruebaAutorLibroModel.LibroGetAll_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublicacion" ColumnName="FechaPublicacion" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="AutorNombre" ColumnName="AutorNombre" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="EditorialNombre" ColumnName="EditorialNombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

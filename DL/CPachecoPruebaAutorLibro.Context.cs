@@ -48,7 +48,7 @@ namespace DL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("LibroAdd", tituloParameter, fechaPublicacionParameter, idEditorialParameter);
         }
     
-        public virtual int LibroGetAll(string titulo, Nullable<int> year, Nullable<int> idEditorial, Nullable<int> idAutor)
+        public virtual ObjectResult<LibroGetAll_Result> LibroGetAll(string titulo, Nullable<int> year, Nullable<int> idEditorial, Nullable<int> idAutor)
         {
             var tituloParameter = titulo != null ?
                 new ObjectParameter("Titulo", titulo) :
@@ -66,7 +66,7 @@ namespace DL
                 new ObjectParameter("IdAutor", idAutor) :
                 new ObjectParameter("IdAutor", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("LibroGetAll", tituloParameter, yearParameter, idEditorialParameter, idAutorParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<LibroGetAll_Result>("LibroGetAll", tituloParameter, yearParameter, idEditorialParameter, idAutorParameter);
         }
     }
 }
