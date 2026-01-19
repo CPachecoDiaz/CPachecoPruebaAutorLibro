@@ -77,39 +77,39 @@ namespace PL.Controllers
             return RedirectToAction("GetAll");
         }
 
-        [HttpPost]
-        public ActionResult DeleteByIdEditorial(int idEditorial)
-        {
-            ML.Result result = DeleteByEditorial(idEditorial);
+        //[HttpPost]
+        //public ActionResult DeleteByIdEditorial(int idEditorial)
+        //{
+        //    ML.Result result = DeleteByEditorial(idEditorial);
 
-            if (result.Correct)
-            {
-                TempData["Success"] = "Libros eliminados correctamente";
-            }
-            else
-            {
-                TempData["Error"] = "Error al eliminar libros: " + result.ErrorMessage;
-            }
+        //    if (result.Correct)
+        //    {
+        //        TempData["Success"] = "Libros eliminados correctamente";
+        //    }
+        //    else
+        //    {
+        //        TempData["Error"] = "Error al eliminar libros: " + result.ErrorMessage;
+        //    }
 
-            return RedirectToAction("GetAll");
-        }
+        //    return RedirectToAction("GetAll");
+        //}
 
-        [HttpPost]
-        public ActionResult DeleteByIdAutor(int idAutor)
-        {
-            ML.Result result = DeleteByAutor(idAutor);
+        //[HttpPost]
+        //public ActionResult DeleteByIdAutor(int idAutor)
+        //{
+        //    ML.Result result = DeleteByAutor(idAutor);
 
-            if (result.Correct)
-            {
-                TempData["Success"] = "Libros del autor eliminados correctamente";
-            }
-            else
-            {
-                TempData["Error"] = "Error al eliminar libros: " + result.ErrorMessage;
-            }
+        //    if (result.Correct)
+        //    {
+        //        TempData["Success"] = "Libros del autor eliminados correctamente";
+        //    }
+        //    else
+        //    {
+        //        TempData["Error"] = "Error al eliminar libros: " + result.ErrorMessage;
+        //    }
 
-            return RedirectToAction("GetAll");
-        }
+        //    return RedirectToAction("GetAll");
+        //}
 
 
         [NonAction]
@@ -195,72 +195,72 @@ namespace PL.Controllers
             return result;
         }
 
-        [NonAction]
-        public ML.Result DeleteByEditorial(int idEditorial)
-        {
-            ML.Result result = new ML.Result();
+        //[NonAction]
+        //public ML.Result DeleteByEditorial(int idEditorial)
+        //{
+        //    ML.Result result = new ML.Result();
 
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    string endpoint = "http://localhost:62135/api/Libro/";
+        //    try
+        //    {
+        //        using (var client = new HttpClient())
+        //        {
+        //            string endpoint = "http://localhost:62135/api/Libro/";
 
-                    client.BaseAddress = new Uri(endpoint);
+        //            client.BaseAddress = new Uri(endpoint);
 
-                    var postTask = client.DeleteAsync($"DeleteByEditorial/{idEditorial}");
-                    postTask.Wait();
+        //            var postTask = client.DeleteAsync($"DeleteByEditorial/{idEditorial}");
+        //            postTask.Wait();
 
-                    var resultServicio = postTask.Result;
+        //            var resultServicio = postTask.Result;
 
-                    if (resultServicio.IsSuccessStatusCode)
-                    {
-                        result.Correct = true;
-                    }
+        //            if (resultServicio.IsSuccessStatusCode)
+        //            {
+        //                result.Correct = true;
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Correct = false;
-                result.ErrorMessage = ex.Message;
-                result.Ex = ex;
-            }
-            return result;
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result.Correct = false;
+        //        result.ErrorMessage = ex.Message;
+        //        result.Ex = ex;
+        //    }
+        //    return result;
+        //}
 
-        [NonAction]
-        public ML.Result DeleteByAutor(int idAutor)
-        {
-            ML.Result result = new ML.Result();
+        //[NonAction]
+        //public ML.Result DeleteByAutor(int idAutor)
+        //{
+        //    ML.Result result = new ML.Result();
 
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    string endpoint = "http://localhost:62135/api/Libro/";
+        //    try
+        //    {
+        //        using (var client = new HttpClient())
+        //        {
+        //            string endpoint = "http://localhost:62135/api/Libro/";
 
-                    client.BaseAddress = new Uri(endpoint);
+        //            client.BaseAddress = new Uri(endpoint);
 
-                    var postTask = client.DeleteAsync($"DeleteByAutor/{idAutor}");
-                    postTask.Wait();
+        //            var postTask = client.DeleteAsync($"DeleteByAutor/{idAutor}");
+        //            postTask.Wait();
 
-                    var resultServicio = postTask.Result;
+        //            var resultServicio = postTask.Result;
 
-                    if (resultServicio.IsSuccessStatusCode)
-                    {
-                        result.Correct = true;
-                    }
+        //            if (resultServicio.IsSuccessStatusCode)
+        //            {
+        //                result.Correct = true;
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Correct = false;
-                result.ErrorMessage = ex.Message;
-                result.Ex = ex;
-            }
-            return result;
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result.Correct = false;
+        //        result.ErrorMessage = ex.Message;
+        //        result.Ex = ex;
+        //    }
+        //    return result;
+        //}
     }
 }
