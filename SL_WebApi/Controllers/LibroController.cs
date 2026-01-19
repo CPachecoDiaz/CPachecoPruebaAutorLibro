@@ -105,5 +105,24 @@ namespace SL_WebApi.Controllers
 
         }
 
+        [HttpDelete]
+        [Route("GetById/{idLibro}")]
+        public IHttpActionResult GetById(int idLibro)
+        {
+            ML.Result result = BL.Libro.GetById(idLibro);
+
+            if (result.Correct)
+            {
+                return Ok(result);
+
+            }
+            else
+            {
+                return Content(HttpStatusCode.BadRequest, result.ErrorMessage);
+
+            }
+
+        }
+
     }
 }

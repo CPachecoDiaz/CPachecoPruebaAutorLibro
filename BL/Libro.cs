@@ -166,5 +166,58 @@ namespace BL
 
             return result;
         }
+
+        public static ML.Result GetById(int idLibro)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.CPahcecoPruebaAutorLibroEntities context = new DL.CPahcecoPruebaAutorLibroEntities())
+                {
+                    var registros = context.GetById(idLibro).SingleOrDefault();
+
+                    if (registros.IdLibro > 0)
+                    {
+                            ML.Libro libro = new ML.Libro
+                            {
+                                IdLibro = registros.IdLibro,
+                                Titulo = registros.Titulo,
+                                FechaPublicacion = registros.FechaPublicacion,
+                                Editorial = new ML.Editorial
+                                {
+                                    IdEditorial = registros.IdEditorial,
+                                    Nombre = registros.EditorialNombre
+                                },
+                                Autor = new ML.Autor
+                                {
+                                    IdAutor = registros.IdAutor,
+                                    Nombre = registros.AutorNombre,
+                                    Apellido = registros.Apellido
+                                }
+                            };
+
+                            result.Object =libro;
+
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "No hay libros registrados";
+                    }
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
+
     }
 }
