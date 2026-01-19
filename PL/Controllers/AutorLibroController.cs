@@ -77,6 +77,12 @@ namespace PL.Controllers
             return RedirectToAction("GetAll");
         }
 
+        [HttpGet]
+        public ActionResult GetById(int idLibro)
+        {
+            return View();
+        }
+
         //[HttpPost]
         //public ActionResult DeleteByIdEditorial(int idEditorial)
         //{
@@ -144,6 +150,52 @@ namespace PL.Controllers
                                 .DeserializeObject<ML.Libro>(item.ToString());
 
                             result.Objects.Add(librolist);
+                        }
+
+                        result.Correct = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+
+            return result;
+
+        }
+
+        public ML.Result GetByIdRest(int idLibro)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                string endpoint = "http://localhost:62135/api/Libro/";
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(endpoint);
+
+                    var getTask = client.PostAsJsonAsync("GetById", idLibro);
+                    getTask.Wait();
+
+                    var resultServicio = getTask.Result;
+
+                    if (resultServicio.IsSuccessStatusCode)
+                    {
+                        var readTask = resultServicio.Content.ReadAsAsync<ML.Result>();
+                        readTask.Wait();
+
+                        foreach (var item in readTask.Result.Objects)
+                        {
+                            ML.Libro libroInformacion =
+                                Newtonsoft.Json.JsonConvert
+                                .DeserializeObject<ML.Libro>(item.ToString());
+
+                            result.Object = libroInformacion;
                         }
 
                         result.Correct = true;
