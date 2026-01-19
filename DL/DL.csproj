@@ -72,6 +72,9 @@
     <Compile Include="Editorial.cs">
       <DependentUpon>CPachecoPruebaAutorLibro.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetById_Result.cs">
+      <DependentUpon>CPachecoPruebaAutorLibro.tt</DependentUpon>
+    </Compile>
     <Compile Include="Libro.cs">
       <DependentUpon>CPachecoPruebaAutorLibro.tt</DependentUpon>
     </Compile>

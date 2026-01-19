@@ -90,5 +90,14 @@ namespace DL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteByAutor", idAutorParameter);
         }
+    
+        public virtual ObjectResult<GetById_Result> GetById(Nullable<int> idLibro)
+        {
+            var idLibroParameter = idLibro.HasValue ?
+                new ObjectParameter("IdLibro", idLibro) :
+                new ObjectParameter("IdLibro", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetById_Result>("GetById", idLibroParameter);
+        }
     }
 }
