@@ -174,6 +174,8 @@ namespace PL.Controllers
 
         }
 
+        [NonAction]
+
         public ML.Result GetByIdRest(int idLibro)
         {
             ML.Result result = new ML.Result();
@@ -186,7 +188,7 @@ namespace PL.Controllers
                 {
                     client.BaseAddress = new Uri(endpoint);
 
-                    var getTask = client.PostAsJsonAsync("GetById", idLibro);
+                    var getTask = client.GetAsync("GetById" + idLibro);
                     getTask.Wait();
 
                     var resultServicio = getTask.Result;
