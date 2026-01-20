@@ -105,7 +105,7 @@ namespace SL_WebApi.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetById/{idLibro}")]
         public IHttpActionResult GetById(int idLibro)
         {
