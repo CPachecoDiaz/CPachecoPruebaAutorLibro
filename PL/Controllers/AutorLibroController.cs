@@ -78,9 +78,16 @@ namespace PL.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetById(int idLibro)
+        public JsonResult GetById(int idLibro)
         {
-            return View();
+            ML.Result result = GetByIdRest(idLibro);
+
+            if (result.Correct)
+            {
+                return Json(result.Object, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         //[HttpPost]
@@ -189,16 +196,12 @@ namespace PL.Controllers
                         var readTask = resultServicio.Content.ReadAsAsync<ML.Result>();
                         readTask.Wait();
 
-                        foreach (var item in readTask.Result.Objects)
-                        {
-                            ML.Libro libroInformacion =
-                                Newtonsoft.Json.JsonConvert
-                                .DeserializeObject<ML.Libro>(item.ToString());
+                       ML.Libro libroInformacion = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Libro>(readTask.Result.Object.ToString());
 
-                            result.Object = libroInformacion;
-                        }
+                       result.Object = libroInformacion;
+                        
 
-                        result.Correct = true;
+                      result.Correct = true;
                     }
                 }
             }

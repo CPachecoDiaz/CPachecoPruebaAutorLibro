@@ -36,240 +36,308 @@
         </button>
     </div>
 
-        @using (Html.BeginForm("GetAll", "AutorLibro", FormMethod.Post))
-        {
-            <div class="card mb-4" id="busquedaForm"  style="display:none;">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-3">Buscar libros por: </h5>
+    @using (Html.BeginForm("GetAll", "AutorLibro", FormMethod.Post))
+    {
+        <div class="card mb-4" id="busquedaForm" style="display:none;">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">Buscar libros por: </h5>
 
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            @Html.LabelFor(m => m.Titulo)
-                            @Html.TextBoxFor(m => m.Titulo,
-                                               new { @class = "form-control", placeholder = "Buscar por título" })
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Autor</label>
-                            <select name="Autor.IdAutor" class="form-select">
-                                <option value="">-- Selecciona un autor --</option>
-                                <option value="1">Gabriel García Márquez</option>
-                                <option value="2">Mario	Vargas Llosa</option>
-                                <option value="3">Isabel Allende</option>
-                                <option value="4">Julio Cortázar</option>
-                            </select>
-                        </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Titulo)
+                        @Html.TextBoxFor(m => m.Titulo,
+                                           new { @class = "form-control", placeholder = "Buscar por título" })
                     </div>
 
-                    <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-primary">Buscar</button>
-                        <a href="@Url.Action("GetAll","AutorLibro")" class="btn btn-secondary">Limpiar</a>
+                    <div class="col-md-6">
+                        <label class="form-label">Autor</label>
+                        <select name="Autor.IdAutor" class="form-select">
+                            <option value="">-- Selecciona un autor --</option>
+                            <option value="1">Gabriel García Márquez</option>
+                            <option value="2">Mario	Vargas Llosa</option>
+                            <option value="3">Isabel Allende</option>
+                            <option value="4">Julio Cortázar</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-        }
 
-        <div class="card mb-4">
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Título</th>
-                            <th>Autor</th>
-                            <th class="text-center">Información</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Libros != null && Model.Libros.Count > 0)
-                        {
-                            foreach (ML.Libro libro in Model.Libros)
-                            {
-                                <tr>
-                                    <td>@libro.Titulo</td>
-                                    <td>@libro.Autor.Nombre @libro.Autor.Apellido</td>
-                                    <td class="text-center">
-                                        <a class="btn btn-outline-info btn-sm"
-                                           href="@Url.Action("GetById","AutorLibro", new { idLibro = libro.IdLibro })">
-                                            Ver información
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a href="@Url.Action("GetAll","AutorLibro")" class="btn btn-secondary">Limpiar</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th class="text-center">Información</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Libros != null && Model.Libros.Count > 0)
+                    {
+                        foreach (ML.Libro libro in Model.Libros)
                         {
                             <tr>
-                                <td colspan="3" class="text-center text-muted py-3">
-                                    No hay libros registrados
+                                <td>@libro.Titulo</td>
+                                <td>@libro.Autor.Nombre @libro.Autor.Apellido</td>
+                                <td class="text-center">
+                                    <button class="btn btn-outline-info btn-sm"
+                                            onclick="verLibro(@libro.IdLibro)">
+                                        Ver información
+                                    </button>
                                 </td>
                             </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="text-end">
-            <button class="btn btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalAddLibro">
-                + Añadir libro
-            </button>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-3">
+                                No hay libros registrados
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <div class="modal fade" id="modalAddLibro" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div class="text-end">
+        <button class="btn btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalAddLibro">
+            + Añadir libro
+        </button>
+    </div>
+</div>
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Información del libro: </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<div class="modal fade" id="modalAddLibro" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Información del libro: </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            @using (Html.BeginForm("Forms", "AutorLibro", FormMethod.Post,
+                new { @onsubmit = "return ValidarForm(this);" }))
+            {
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Titulo)
+                        @Html.TextBoxFor(m => m.Titulo,
+                                      new { @class = "form-control", onblur = "validarBlur(this)" })
+                    </div>
+
+                    <div class="mb-3">
+                        @Html.Label("Fecha Publicación")
+                        @Html.TextBoxFor(m => m.FechaPublicacion, "{0:yyyy-MM-dd}",
+                                      new { @class = "form-control", type = "date" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Editorial</label>
+                        <select name="Editorial.IdEditorial"
+                                class="form-select"
+                                onblur="validarDDL(this)">
+                            <option value="">-- Selecciona una editorial --</option>
+                            <option value="1">Editorial Sudamericana</option>
+                            <option value="2">Alfaguara</option>
+                            <option value="3">Planeta</option>
+                            <option value="4">Anagrama</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Autor</label>
+                        <select name="Autor.IdAutor"
+                                class="form-select"
+                                onblur="validarDDL(this)">
+                            <option value="">-- Selecciona un autor --</option>
+                            <option value="1">Gabriel García Márquez</option>
+                            <option value="2">Mario	Vargas Llosa</option>
+                            <option value="3">Isabel Allende</option>
+                            <option value="4">Julio Cortázar</option>
+                        </select>
+                    </div>
+
                 </div>
 
-                @using (Html.BeginForm("Forms", "AutorLibro", FormMethod.Post,
-                    new { @onsubmit = "return ValidarForm(this);" }))
-                {
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.Titulo)
-                            @Html.TextBoxFor(m => m.Titulo,
-                                          new { @class = "form-control", onblur = "validarBlur(this)" })
-                        </div>
-
-                        <div class="mb-3">
-                            @Html.Label("Fecha Publicación")
-                            @Html.TextBoxFor(m => m.FechaPublicacion, "{0:yyyy-MM-dd}",
-                                          new { @class = "form-control", type = "date" })
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Editorial</label>
-                            <select name="Editorial.IdEditorial"
-                                    class="form-select"
-                                    onblur="validarDDL(this)">
-                                <option value="">-- Selecciona una editorial --</option>
-                                <option value="1">Editorial Sudamericana</option>
-                                <option value="2">Alfaguara</option>
-                                <option value="3">Planeta</option>
-                                <option value="4">Anagrama</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Autor</label>
-                            <select name="Autor.IdAutor"
-                                    class="form-select"
-                                    onblur="validarDDL(this)">
-                                <option value="">-- Selecciona un autor --</option>
-                                <option value="1">Gabriel García Márquez</option>
-                                <option value="2">Mario	Vargas Llosa</option>
-                                <option value="3">Isabel Allende</option>
-                                <option value="4">Julio Cortázar</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Cancelar
-                        </button>
-                    </div>
-                }
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                </div>
+            }
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="modalDetalleLibro" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Información del libro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Título:</div>
+                    <div class="col-md-8" id="lblTitulo"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Autor:</div>
+                    <div class="col-md-8" id="lblAutor"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Editorial:</div>
+                    <div class="col-md-8" id="lblEditorial"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Fecha Publicación:</div>
+                    <div class="col-md-8" id="lblFecha"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
-    <script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery-3.7.0.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('#btnBusqueda').click(function () {
-                $('#busquedaForm').toggle();
-            });
+<script>
+    $(document).ready(function () {
+        $('#btnBusqueda').click(function () {
+            $('#busquedaForm').toggle();
         });
-    </script>
+    });
+</script>
 
-    <script>
-        setTimeout(function () {
-            $('.alert').alert('close');
-        }, 3000);
-    </script>
+<script>
+    setTimeout(function () {
+        $('.alert').alert('close');
+    }, 3000);
+</script>
 
-    <script>
-        function validarBlur(input) {
-            let valor = input.value.trim();
-            let padre = $(input).closest('.mb-3');
+<script>
+    function validarBlur(input) {
+        let valor = input.value.trim();
+        let padre = $(input).closest('.mb-3');
 
-            padre.find('.invalid-feedback, .valid-feedback').remove();
+        padre.find('.invalid-feedback, .valid-feedback').remove();
 
-            if (valor.length === 0) {
-                $(input)
-                    .removeClass("is-valid")
-                    .addClass("is-invalid");
+        if (valor.length === 0) {
+            $(input)
+                .removeClass("is-valid")
+                .addClass("is-invalid");
 
-                padre.append(`
+            padre.append(`
                     <div class="invalid-feedback">
                         Este campo no puede quedar vacío.
                     </div>
                 `);
 
-                return false;
-            }
-
-            $(input)
-                .removeClass("is-invalid")
-                .addClass("is-valid");
-
-            return true;
+            return false;
         }
 
-        function validarDDL(input) {
+        $(input)
+            .removeClass("is-invalid")
+            .addClass("is-valid");
 
-            let valor = $(input).val();
-            let padre = $(input).closest('div');
+        return true;
+    }
 
-            let mensaje = padre.find('.valid-feedback, .invalid-feedback');
-            if (mensaje.length > 0) mensaje.remove();
+    function validarDDL(input) {
 
-            if (valor === "") {
+        let valor = $(input).val();
+        let padre = $(input).closest('div');
 
-                $(input).removeClass("is-valid").addClass("is-invalid");
+        let mensaje = padre.find('.valid-feedback, .invalid-feedback');
+        if (mensaje.length > 0) mensaje.remove();
 
-                padre.append(`
+        if (valor === "") {
+
+            $(input).removeClass("is-valid").addClass("is-invalid");
+
+            padre.append(`
      <div class="invalid-feedback">
         Debes seleccionar un opción.
      </div>
  `);
 
-                return false;
+            return false;
+        }
+
+        $(input).removeClass("is-invalid").addClass("is-valid");
+        return true;
+
+    }
+    function ValidarForm(form) {
+        let valido = true;
+
+        $(form).find('input,select').each(function () {
+
+            let tag = this.tagName.toLowerCase();
+            let type = $(this).attr('type');
+
+            if (tag === 'select') {
+                if (!validarDDL(this)) valido = false;
+            }
+            else if (type !== 'hidden' && type !== 'submit') {
+                if (!validarBlur(this)) valido = false;
             }
 
-            $(input).removeClass("is-invalid").addClass("is-valid");
-            return true;
+        });
 
-        }
-        function ValidarForm(form) {
-            let valido = true;
+        return valido;
+    }
+</script>
 
-            $(form).find('input,select').each(function () {
+<script>
+    function verLibro(idLibro) {
 
-                let tag = this.tagName.toLowerCase();
-                let type = $(this).attr('type');
+        $.ajax({
+            url: '@Url.Action("GetById", "AutorLibro")',
+            type: 'GET',
+            data: { idLibro: idLibro },
+            success: function (libro) {
 
-                if (tag === 'select') {
-                    if (!validarDDL(this)) valido = false;
+                if (libro) {
+                    $('#lblTitulo').text(libro.Titulo);
+                    $('#lblAutor').text(libro.Autor.Nombre + ' ' + libro.Autor.Apellido);
+                    $('#lblEditorial').text(libro.Editorial.Nombre);
+
+                    let fecha = new Date(libro.FechaPublicacion);
+                    $('#lblFecha').text(fecha.toLocaleDateString());
+
+                    $('#modalDetalleLibro').modal('show');
                 }
-                else if (type !== 'hidden' && type !== 'submit') {
-                    if (!validarBlur(this)) valido = false;
-                }
-
-            });
-
-            return valido;
-        }
-    </script>
+            },
+            error: function () {
+                alert('Error al obtener la información del libro');
+            }
+        });
+    }
+</script>
