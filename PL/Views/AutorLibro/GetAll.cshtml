@@ -118,7 +118,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalAddLibro" tabindex="-1">
+<div class="modal fade" id="modalAddLibro" tabindex="-1" data-bs-backdrop="static"data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -183,39 +183,59 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalDetalleLibro" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<div class="modal fade" id="modalDetalleLibro" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"> 
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
 
-            <div class="modal-header bg-info text-white">
-                <h5 class="modal-title">Información del libro</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-semibold">
+                    Información del libro: 
+                </h5>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
-                <div class="row mb-3">
-                    <div class="col-md-4 fw-bold">Título:</div>
-                    <div class="col-md-8" id="lblTitulo"></div>
+            <div class="modal-body px-4 py-3">
+
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-muted fw-semibold">
+                        Título
+                    </div>
+                    <div class="col-md-8 fs-6" id="lblTitulo"></div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-4 fw-bold">Autor:</div>
-                    <div class="col-md-8" id="lblAutor"></div>
+                <hr class="my-2">
+
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-muted fw-semibold">
+                        Autor
+                    </div>
+                    <div class="col-md-8 fs-6" id="lblAutor"></div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-4 fw-bold">Editorial:</div>
-                    <div class="col-md-8" id="lblEditorial"></div>
+                <hr class="my-2">
+
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-muted fw-semibold">
+                        Editorial
+                    </div>
+                    <div class="col-md-8 fs-6" id="lblEditorial"></div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-4 fw-bold">Fecha Publicación:</div>
-                    <div class="col-md-8" id="lblFecha"></div>
+                <hr class="my-2">
+
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-4 text-muted fw-semibold">
+                        Fecha de publicación
+                    </div>
+                    <div class="col-md-8 fs-6" id="lblFecha"></div>
                 </div>
+
             </div>
 
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">
+            <div class="modal-footer bg-light">
+                <button class="btn btn-outline-secondary px-4"
+                        data-bs-dismiss="modal">
                     Cerrar
                 </button>
             </div>
@@ -223,6 +243,7 @@
         </div>
     </div>
 </div>
+
 
 
 <script src="~/Scripts/jquery-3.7.0.js"></script>
@@ -329,8 +350,17 @@
                     $('#lblAutor').text(libro.Autor.Nombre + ' ' + libro.Autor.Apellido);
                     $('#lblEditorial').text(libro.Editorial.Nombre);
 
-                    let fecha = new Date(libro.FechaPublicacion);
-                    $('#lblFecha').text(fecha.toLocaleDateString());
+                    console.log(libro.FechaPublicacion);
+
+                    let fechaRaw = libro.FechaPublicacion;
+                    let timestamp = parseInt(fechaRaw.replace(/[^0-9]/g, ''));
+                    let fecha = new Date(timestamp);
+
+                    let dia = String(fecha.getDate()).padStart(2, '0');
+                    let mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                    let anio = fecha.getFullYear();
+
+                    $('#lblFecha').text(`${dia}/${mes}/${anio}`);
 
                     $('#modalDetalleLibro').modal('show');
                 }
